@@ -69,7 +69,7 @@ int main() {
 
     clock_t tiempoTotalInicio = clock(); //Tiempo total
 
-    string path = "/Users/davidharos/CLionProjects/untitled/archivos"; //Directorio con los archivos
+    string path = "../archivos/"; //Directorio con los archivos
 
     double time_file = 0;
     for (auto& file : std::__fs::filesystem::directory_iterator{path}){  //Se abre todo el directorio
