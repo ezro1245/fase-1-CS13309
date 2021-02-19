@@ -17,7 +17,6 @@
 using namespace std;
 
 //**************Metodos**************
-
 //readFile se encarga de abrir cada archivo individualmente y medir el tiempo que tarda en hacerlo.
 double readFile(string path){
     double timeTotalApertura = 0;
@@ -28,6 +27,7 @@ double readFile(string path){
         cout << "El archivo no existe";
         exit(1);
     }
+
     else cout << path << " "; //se imprime para ver si funciona
     //std::cout << archivo.rdbuf();
     archivo.close(); //se cierra el archivo
@@ -42,11 +42,8 @@ double readFile(string path){
     return timeTotalApertura;
 }
 
-
-
 /*
 void writeLog(string basicString, time_t (*time)(time_t *const), double apertura) {
-
 }
 
 void writeLog(string path, double time, double timeTotalApertura){
@@ -63,14 +60,10 @@ void writeLog(string path, double time, double timeTotalApertura){
 }
 */
 
-
 int main() {
 
-
     clock_t tiempoTotalInicio = clock(); //Tiempo total
-
     string path = "/Users/davidharos/CLionProjects/untitled/archivos"; //Directorio con los archivos
-
     double time_file = 0;
     for (auto& file : std::__fs::filesystem::directory_iterator{path}){  //Se abre todo el directorio
         time_file = time_file + readFile(file.path().string()); //Se envia al metodo para leerse
@@ -84,9 +77,6 @@ int main() {
     cout << "TIEMPO FINAL FINAL " << timeFINAL;
     return 0;
 }
-
-
-
 
 //ESTO ES DE LA ACTIVIDAD 2
 /*
