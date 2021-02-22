@@ -1,14 +1,11 @@
 #include <iostream>
 #include <chrono>
-#include <iostream>
 #include <fstream>
 
 typedef std::chrono::high_resolution_clock Clock;
+using namespace std;
 
-
-
-
-int main()
+int main(int argc, char** argv)
 {
     auto t1 = Clock::now();     //Se incia el reloj del tiempo total de ejecución.
 
@@ -19,17 +16,6 @@ int main()
 
         auto t1_ciclo = Clock::now();   //Se incia el reloj para medir la duración de apertura de archivos.
 
-        std::ofstream html_file;
-        html_file.open(file.path().string());  //Se abre el archivo.
-
-        //********ACTIVIDAD 2************
-
-
-
-        //*******ACTIVIDAD 2**************
-
-
-        html_file.close();//Se cierra el archivo.
 
         auto t2_ciclo = Clock::now();   //Se termina el reloj para medir la duración de apertura de archivos.
 
@@ -39,6 +25,43 @@ int main()
     }
     myfile.close(); //Se cierra el archivo para guardar los resultados.
 
+
+    /*
+     * TEST: En este codigo se lee el archivo 002.html que es uno que le añadi codigo manualmente
+     * ya que chingaron su mare todos los html, se lee cada linea, dime si le entiendes a la logica
+     */
+    std::string no_tag_file = "";
+
+    std::string line;
+    std::fstream myfile2;
+    myfile2.open("../archivos/002.html", std::ios::in);
+    if (!myfile2)
+        std::cout << "file cannot open!";
+
+    bool inside = false;
+    while (getline(myfile2, line))
+    {
+        for (char c : line) {
+            if (c == '>'){
+                inside = true;
+                no_tag_file += " ";
+            }
+            else if (c == '<')
+                inside = false;
+            else if (inside)
+                no_tag_file += c;
+        }
+    }
+
+    std::cout << no_tag_file << endl;
+
+    /*
+     * TEST: fin del test
+     *
+     * TODO: meter esta madre en el ciclo de arriba
+     * da como resultdo un string, ese estring lo podemos limpiar y meterlo en otro archivo o idealmente
+     * ya con ese string procesar de una vez el orden alfabetico y meter eso a un file final
+     */
 
     auto t2 = Clock::now();     //Se deja de medir el tiempo total de ejecución.
 
