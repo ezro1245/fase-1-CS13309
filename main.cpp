@@ -1,6 +1,8 @@
 #include <iostream>
 #include <chrono>
 #include <fstream>
+#include <vector>
+#include <sstream>
 
 typedef std::chrono::high_resolution_clock Clock;
 using namespace std;
@@ -51,6 +53,36 @@ int main(int argc, char** argv)
             else if (inside)
                 no_tag_file += c;
         }
+
+        myfile2.close();
+
+        //ACTIVIDAD 3 ************
+        std::ifstream myfile2;
+
+        myfile2.open("../archivos/002.html", std::ios::in); //Se abre el archivo
+
+        std::ofstream outFile;
+
+        outFile.open("file.txt",std::ios::in); //archivo de salida.
+
+        std::stringstream ss;
+        // Se copian todos los contenidos del archivo a un string de tipo StringStream.
+        ss << myfile2.rdbuf();
+        // Se extrae el String del StringStream.
+        std::string contents = ss.str();
+        //std::cout << contents;
+
+        // Se hace un vector del String creado previamente de los contenidos del archivo.
+        std::vector<char> buff(contents.begin(), contents.end());
+
+        //Se ordena el vector por orden alfabetico con la funcion sort
+        sort(buff.begin(), buff.end());
+
+        //Se escriben los datos al archivo de salida
+        for(std::vector<char>::const_iterator i = buff.begin(); i != buff.end(); ++i) {
+            outFile.fill(*i);
+        }
+        //ACTIVIDAD 3 ********
     }
 
     std::cout << no_tag_file << endl;
