@@ -6,13 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/Users/davidharos/CLionProjects/untitled/main.cpp
+/Users/ezro/Documents/PISA/fase1/fase-1-CS13309/main.cpp
 iostream
 -
 chrono
 -
-iostream
--
 fstream
+-
+vector
+-
+algorithm
 -
 
