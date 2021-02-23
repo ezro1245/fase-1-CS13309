@@ -13,63 +13,56 @@ int main(int argc, char** argv)
 
     std::ofstream myfile;
 
-    myfile.open ("resultados.txt");     //Se abre el archivo para guardar los resultados.
+    myfile.open ("resultados.txt");
+
     for (auto& file : std::__fs::filesystem::directory_iterator{"../archivos"}){
 
-        auto t1_ciclo = Clock::now();   //Se incia el reloj para medir la duración de apertura de archivos.
+        auto t1_ciclo = Clock::now();
 
+        std::fstream html_file;
+        html_file.open(file.path().string(),std::ios::in); //Todos los nombres de los archivos
 
-        auto t2_ciclo = Clock::now();   //Se termina el reloj para medir la duración de apertura de archivos.
+        //ACTIVIDAD 2
 
-        auto time_elapsed_cycle = (std::chrono::duration_cast<std::chrono::microseconds>(t2_ciclo - t1_ciclo).count());
+        std::string no_tag_file = "";
 
-        myfile << file.path().string() << " " << time_elapsed_cycle << " microsegundos" << std::endl;
-    }
-    myfile.close(); //Se cierra el archivo para guardar los resultados.
+        std::string line;
 
+        if (!html_file)
+            std::cout << "file cannot open!";
 
-    /*
-     * TEST: En este codigo se lee el archivo 002.html que es uno que le añadi codigo manualmente
-     * ya que chingaron su mare todos los html, se lee cada linea, dime si le entiendes a la logica
-     */
-    std::string no_tag_file = "";
-
-    std::string line;
-    std::fstream myfile2;
-    myfile2.open("../archivos/002.html", std::ios::in);
-    if (!myfile2)
-        std::cout << "file cannot open!";
-
-    bool inside = false;
-    while (getline(myfile2, line))
-    {
-        for (char c : line) {
-            if (c == '>'){
-                inside = true;
-                no_tag_file += " ";
+        bool inside = false;
+        while (getline(html_file, line))
+        {
+            for (char c : line) {
+                if (c == '>'){
+                    inside = true;
+                    no_tag_file += " ";
+                }
+                else if (c == '<')
+                    inside = false;
+                else if (inside)
+                    no_tag_file += c;
             }
-            else if (c == '<')
-                inside = false;
-            else if (inside)
-                no_tag_file += c;
         }
+        std::cout<<no_tag_file << endl;
+        //ACTIVIDAD 2
 
-        myfile2.close();
-
-        //ACTIVIDAD 3 ************
-        std::ifstream myfile2;
-
-        myfile2.open("../archivos/002.html", std::ios::in); //Se abre el archivo
+        //ACTIVIDAD 3
 
         std::ofstream outFile;
 
-        outFile.open("file.txt",std::ios::in); //archivo de salida.
+        //ESTE ES EL ARRAY DE NOMBRES DE ARCHIVOS file.path().string()
+
+        outFile.open("file.txt"); //archivo de salida.
 
         std::stringstream ss;
         // Se copian todos los contenidos del archivo a un string de tipo StringStream.
-        ss << myfile2.rdbuf();
+        ss << html_file.rdbuf();
         // Se extrae el String del StringStream.
         std::string contents = ss.str();
+
+        //Se imprime para ver si jala
         //std::cout << contents;
 
         // Se hace un vector del String creado previamente de los contenidos del archivo.
@@ -82,18 +75,17 @@ int main(int argc, char** argv)
         for(std::vector<char>::const_iterator i = buff.begin(); i != buff.end(); ++i) {
             outFile.fill(*i);
         }
-        //ACTIVIDAD 3 ********
+
+        html_file.close();
+
+        auto t2_ciclo = Clock::now();
+
+        auto time_elapsed_cycle = (std::chrono::duration_cast<std::chrono::microseconds>(t2_ciclo - t1_ciclo).count());
+
+        myfile << file.path().string() << " " << time_elapsed_cycle << " microsegundos" << std::endl;
     }
 
-    std::cout << no_tag_file << endl;
-
-    /*
-     * TEST: fin del test
-     *
-     * TODO: meter esta madre en el ciclo de arriba
-     * da como resultdo un string, ese estring lo podemos limpiar y meterlo en otro archivo o idealmente
-     * ya con ese string procesar de una vez el orden alfabetico y meter eso a un file final
-     */
+    myfile.close(); //Se cierra el archivo para guardar los resultados.
 
     auto t2 = Clock::now();     //Se deja de medir el tiempo total de ejecución.
 
